@@ -144,3 +144,19 @@ func Login(c *gin.Context) {
 		},
 	})
 }
+
+func FindUsers(c *gin.Context) {
+
+	// Inisialisasi slice untuk menampung data user
+	var users []models.User
+
+	// Ambil data user dari database
+	database.DB.Find(&users)
+
+	// Kirimkan response sukses dengan data user
+	c.JSON(http.StatusOK, models.SuccessResponse{
+		Success: true,
+		Message: "Lists Data Users",
+		Data:    users,
+	})
+}
