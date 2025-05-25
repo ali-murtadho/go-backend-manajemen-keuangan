@@ -160,3 +160,182 @@ func FindUsers(c *gin.Context) {
 		Data:    users,
 	})
 }
+
+func CreateUser(c *gin.Context) {
+
+	//struct user request
+	var req = models.UserCreateRequest{}
+
+	// Bind JSON request ke struct UserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, models.ErrorResponse{
+			Success: false,
+			Message: "Validation Errors",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// Inisialisasi user baru
+	user := models.User{
+		Name:     req.Name,
+		Username: req.Username,
+		Email:    req.Email,
+		Password: helpers.HashPassword(req.Password),
+	}
+
+	// Simpan user ke database
+	if err := database.DB.Create(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			Success: false,
+			Message: "Failed to create user",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// Kirimkan response sukses
+	c.JSON(http.StatusCreated, models.SuccessResponse{
+		Success: true,
+		Message: "User created successfully",
+		Data: models.UserResponse{
+			Id:        user.Id,
+			Name:      user.Name,
+			Username:  user.Username,
+			Email:     user.Email,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		},
+	})
+
+}
+
+func FindUserById(c *gin.Context) {
+
+	// Ambil ID user dari parameter URL
+	id := c.Param("id")
+
+	// Inisialisasi user
+	var user models.User
+
+	// Cari user berdasarkan ID
+	if err := database.DB.First(&user, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, models.ErrorResponse{
+			Success: false,
+			Message: "User not found",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// Kirimkan response sukses dengan data user
+	c.JSON(http.StatusOK, models.SuccessResponse{
+		Success: true,
+		Message: "User Found",
+		Data: models.UserResponse{
+			Id:        user.Id,
+			Name:      user.Name,
+			Username:  user.Username,
+			Email:     user.Email,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		},
+	})
+}
+
+func UpdateUser(c *gin.Context) {
+
+	// Ambil ID user dari parameter URL
+	id := c.Param("id")
+
+	// Inisialisasi user
+	var user models.User
+
+	// Cari user berdasarkan ID
+	if err := database.DB.First(&user, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, models.ErrorResponse{
+			Success: false,
+			Message: "User not found",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	//struct user request
+	var req = models.UserUpdateRequest{}
+
+	// Bind JSON request ke struct UserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, models.ErrorResponse{
+			Success: false,
+			Message: "Validation Errors",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// Update user dengan data baru
+	user.Name = req.Name
+	user.Username = req.Username
+	user.Email = req.Email
+	user.Password = helpers.HashPassword(req.Password)
+
+	// Simpan perubahan ke database
+	if err := database.DB.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			Success: false,
+			Message: "Failed to update user",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// Kirimkan response sukses
+	c.JSON(http.StatusOK, models.SuccessResponse{
+		Success: true,
+		Message: "User updated successfully",
+		Data: models.UserResponse{
+			Id:        user.Id,
+			Name:      user.Name,
+			Username:  user.Username,
+			Email:     user.Email,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		},
+	})
+}
+
+func DeleteUser(c *gin.Context) {
+
+	// Ambil ID user dari parameter URL
+	id := c.Param("id")
+
+	// Inisialisasi user
+	var user models.User
+
+	// Cari user berdasarkan ID
+	if err := database.DB.First(&user, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, models.ErrorResponse{
+			Success: false,
+			Message: "User not found",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// Hapus user dari database
+	if err := database.DB.Delete(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			Success: false,
+			Message: "Failed to delete user",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
+	// Kirimkan response sukses
+	c.JSON(http.StatusOK, models.SuccessResponse{
+		Success: true,
+		Message: "User deleted successfully",
+	})
+}
