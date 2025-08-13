@@ -3,13 +3,73 @@
 -- =================================================================
 
 -- Tabel untuk menyimpan informasi pengguna (jika sistem multi-user)
-CREATE TABLE Pengguna (
-    id_pengguna INT PRIMARY KEY AUTO_INCREMENT,
-    nama_lengkap VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    kata_sandi VARCHAR(255) NOT NULL, -- Simpan hash kata sandi, bukan plain text
-    dibuat_pada TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- 1. USERS
+CREATE TABLE users (
+                       id BIGSERIAL PRIMARY KEY,
+                       name VARCHAR(100) NOT NULL,
+                       email VARCHAR(255) NOT NULL UNIQUE,
+                       username VARCHAR(50) UNIQUE,
+                       phone VARCHAR(20),
+                       password VARCHAR(255) NOT NULL,
+                       status TEXT CHECK (status IN ('inactive','active','banned')) DEFAULT 'inactive',
+                       email_verified_at TIMESTAMP NULL,
+                       phone_verified_at TIMESTAMP NULL,
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 2. USER TOKENS (Refresh Token / Device Login)
+CREATE TABLE user_tokens (
+                             id BIGSERIAL PRIMARY KEY,
+                             user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                             refresh_token TEXT NOT NULL,
+                             ip_address VARCHAR(45),
+                             user_agent TEXT,
+                             expires_at TIMESTAMP NOT NULL,
+                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. ROLES
+CREATE TABLE roles (
+                       id BIGSERIAL PRIMARY KEY,
+                       name VARCHAR(50) NOT NULL,
+                       slug VARCHAR(50) NOT NULL UNIQUE,
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. PERMISSIONS
+CREATE TABLE permissions (
+                             id BIGSERIAL PRIMARY KEY,
+                             name VARCHAR(50) NOT NULL,
+                             slug VARCHAR(50) NOT NULL UNIQUE,
+                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. ROLE_USER (Many-to-Many)
+CREATE TABLE role_user (
+                           user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                           role_id BIGINT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+                           PRIMARY KEY (user_id, role_id)
+);
+
+-- 6. PERMISSION_ROLE (Many-to-Many)
+CREATE TABLE permission_role (
+                                 role_id BIGINT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+                                 permission_id BIGINT NOT NULL REFERENCES permissions(id) ON DELETE CASCADE,
+                                 PRIMARY KEY (role_id, permission_id)
+);
+
+-- 7. USER VERIFICATIONS (OTP / Email Token)
+CREATE TABLE user_verifications (
+                                    id BIGSERIAL PRIMARY KEY,
+                                    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                                    type TEXT CHECK (type IN ('email','phone','password_reset')) NOT NULL,
+                                    token VARCHAR(255) NOT NULL,
+                                    otp_code VARCHAR(6),
+                                    expires_at TIMESTAMP NOT NULL,
+                                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 -- Tabel untuk menyimpan semua akun keuangan pengguna
 -- Contoh: Rekening bank, e-wallet, dompet tunai, kartu kredit.
