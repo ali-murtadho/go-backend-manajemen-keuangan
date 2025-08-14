@@ -3,6 +3,18 @@ package models
 import (
 	"time"
 )
+//id
+//name
+//username
+//email
+//password
+//created_at
+//updated_at
+//token
+//phone
+//status
+//email_verified_at
+//phone_verified_at
 
 // Struct ini digunakan untuk menampilkan data user sebagai response API
 type UserResponse struct {
