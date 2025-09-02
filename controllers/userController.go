@@ -11,7 +11,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Register menangani proses registrasi user baru
+// @Summary Register User
+// @Description Mendaftarkan user baru
+// @Tags User - Auth
+// @Accept json
+// @Produce json
+// @Param request body models.UserCreateRequest true "Request body"
+// @Success 200 {object} models.SuccessResponse
+// @Router /register [post]
 func Register(c *gin.Context) {
 
 	// Inisialisasi struct untuk menangkap data request
@@ -88,6 +95,15 @@ func Register(c *gin.Context) {
 	})
 }
 
+// @Summary Login User
+// @Description Melakukan login user
+// @Tags User - Auth
+// @Accept json
+// @Produce json
+// @Param request body models.UserLoginRequest true "Request body"
+// @Success 200 {object} models.SuccessResponse
+// @Success 401 {object} models.ErrorResponse
+// @Router /login [post]
 func Login(c *gin.Context) {
 
 	// Inisialisasi struct untuk menampung data dari request
@@ -145,6 +161,14 @@ func Login(c *gin.Context) {
 	})
 }
 
+// @Summary Get All Users
+// @Description Mendapatkan semua data user
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.SuccessResponse
+// @Router /users [get]
+// @Param Authorization header string true "Authorization token" example("Bearer <token>")
 func FindUsers(c *gin.Context) {
 
 	// Inisialisasi slice untuk menampung data user
@@ -161,6 +185,16 @@ func FindUsers(c *gin.Context) {
 	})
 }
 
+// @Summary Create User
+// @Description Membuat data user baru
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param request body models.UserCreateRequest true "Request body"
+// @Success 201 {object} models.SuccessResponse
+// @Success 422 {object} models.ErrorResponse
+// @Router /users [post]
+// @Param Authorization header string true "Authorization token" example("Bearer <token>")
 func CreateUser(c *gin.Context) {
 
 	//struct user request
@@ -210,6 +244,16 @@ func CreateUser(c *gin.Context) {
 
 }
 
+// @Summary Get User By ID
+// @Description Mendapatkan data user berdasarkan ID
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param id path string true "ID User"
+// @Success 200 {object} models.SuccessResponse
+// @Success 404 {object} models.ErrorResponse
+// @Router /users/{id} [get]
+// @Param Authorization header string true "Authorization token" example("Bearer <token>")
 func FindUserById(c *gin.Context) {
 
 	// Ambil ID user dari parameter URL
@@ -243,6 +287,18 @@ func FindUserById(c *gin.Context) {
 	})
 }
 
+// @Summary Update User By ID
+// @Description Memperbarui data user berdasarkan ID
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param id path string true "ID User"
+// @Param request body models.UserUpdateRequest true "Request body"
+// @Success 200 {object} models.SuccessResponse
+// @Success 422 {object} models.ErrorResponse
+// @Success 404 {object} models.ErrorResponse
+// @Router /users/{id} [put]
+// @Param Authorization header string true "Authorization token" example("Bearer <token>")
 func UpdateUser(c *gin.Context) {
 
 	// Ambil ID user dari parameter URL
@@ -305,6 +361,16 @@ func UpdateUser(c *gin.Context) {
 	})
 }
 
+// @Summary Delete User By ID
+// @Description Menghapus data user berdasarkan ID
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param id path string true "ID User"
+// @Success 200 {object} models.SuccessResponse
+// @Success 404 {object} models.ErrorResponse
+// @Router /users/{id} [delete]
+// @Param Authorization header string true "Authorization token" example("Bearer <token>")
 func DeleteUser(c *gin.Context) {
 
 	// Ambil ID user dari parameter URL

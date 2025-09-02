@@ -1,0 +1,272 @@
+basePath: /api
+definitions:
+  models.ErrorResponse:
+    properties:
+      errors:
+        additionalProperties:
+          type: string
+        type: object
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.SuccessResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.UserCreateRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+  models.UserLoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.UserUpdateRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - username
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: API documentation untuk backend golang
+  title: Backend API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Melakukan login user
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Login User
+      tags:
+      - User - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Mendaftarkan user baru
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+      summary: Register User
+      tags:
+      - User - Auth
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan semua data user
+      parameters:
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+      summary: Get All Users
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Membuat data user baru
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserCreateRequest'
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create User
+      tags:
+      - User
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Menghapus data user berdasarkan ID
+      parameters:
+      - description: ID User
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Delete User By ID
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan data user berdasarkan ID
+      parameters:
+      - description: ID User
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get User By ID
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui data user berdasarkan ID
+      parameters:
+      - description: ID User
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserUpdateRequest'
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Update User By ID
+      tags:
+      - User
+swagger: "2.0"
