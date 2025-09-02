@@ -12,6 +12,7 @@ CREATE TABLE m_simpanan (
     jenis_simpanan VARCHAR(50) NOT NULL, -- bank konv, bank digital, ewallet
     nama VARCHAR(100) NOT NULL,
     warna VARCHAR(20)
+    isMain BOOLEAN DEFAULT FALSE
 );
 
 -- Saldo bulanan tiap simpanan
