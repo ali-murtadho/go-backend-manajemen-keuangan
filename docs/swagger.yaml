@@ -60,6 +60,11 @@ definitions:
     - name
     - username
     type: object
+  models.WaktuRequest:
+    properties:
+      bulan_tahun:
+        type: string
+    type: object
 host: localhost:3000
 info:
   contact: {}
@@ -115,6 +120,161 @@ paths:
       summary: Register User
       tags:
       - User - Auth
+  /times:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan semua data waktu
+      parameters:
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+      summary: Get All Waktu
+      tags:
+      - Waktu
+    post:
+      consumes:
+      - application/json
+      description: Membuat data waktu baru
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.WaktuRequest'
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create Waktu
+      tags:
+      - Waktu
+  /times/{bulan_tahun}:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan data waktu berdasarkan bulan dan tahun
+      parameters:
+      - description: Bulan dan Tahun
+        in: path
+        name: bulan_tahun
+        required: true
+        type: string
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get Waktu By Bulan Tahun
+      tags:
+      - Waktu
+  /times/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Menghapus data waktu berdasarkan ID
+      parameters:
+      - description: ID Waktu
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Delete Waktu By ID
+      tags:
+      - Waktu
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui data waktu berdasarkan ID
+      parameters:
+      - description: ID Waktu
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.WaktuRequest'
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Update Waktu By ID
+      tags:
+      - Waktu
   /users:
     get:
       consumes:

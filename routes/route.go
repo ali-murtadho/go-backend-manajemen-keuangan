@@ -30,5 +30,10 @@ func SetupRouter() *gin.Engine {
 	router.PUT("/api/users/:id", middlewares.AuthMiddleware(), controllers.UpdateUser)
 	router.DELETE("/api/users/:id", middlewares.AuthMiddleware(), controllers.DeleteUser)
 
+	router.GET("/api/times", middlewares.AuthMiddleware(), controllers.GetListWaktu)
+	router.GET("/api/times/:bulan_tahun", middlewares.AuthMiddleware(), controllers.GetWaktuByBulanTahun)
+	router.POST("/api/times", middlewares.AuthMiddleware(), controllers.CreateTimes)
+	router.PUT("/api/times/:id", middlewares.AuthMiddleware(), controllers.UpdateTimes)
+	router.DELETE("/api/times/:id", middlewares.AuthMiddleware(), controllers.DeleteTimes)
 	return router
 }
