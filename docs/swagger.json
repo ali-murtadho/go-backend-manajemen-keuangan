@@ -83,6 +83,228 @@
                 }
             }
         },
+        "/simpanan": {
+            "get": {
+                "description": "Mendapatkan semua data simpanan",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Simpanan"
+                ],
+                "summary": "Get All Simpanan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "\"Bearer \u003ctoken\u003e\"",
+                        "description": "Authorization token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Membuat data simpanan baru",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Simpanan"
+                ],
+                "summary": "Create Simpanan",
+                "parameters": [
+                    {
+                        "description": "Data Simpanan",
+                        "name": "simpanan",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Simpanan"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"Bearer \u003ctoken\u003e\"",
+                        "description": "Authorization token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/simpanan/{id}": {
+            "get": {
+                "description": "Mendapatkan data simpanan berdasarkan ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Simpanan"
+                ],
+                "summary": "Get Simpanan By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID Simpanan",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"Bearer \u003ctoken\u003e\"",
+                        "description": "Authorization token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Memperbarui data simpanan",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Simpanan"
+                ],
+                "summary": "Update Simpanan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID Simpanan",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Data Simpanan",
+                        "name": "simpanan",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Simpanan"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"Bearer \u003ctoken\u003e\"",
+                        "description": "Authorization token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Menghapus data simpanan berdasarkan ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Simpanan"
+                ],
+                "summary": "Delete Simpanan By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID Simpanan",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"Bearer \u003ctoken\u003e\"",
+                        "description": "Authorization token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/times": {
             "get": {
                 "description": "Mendapatkan semua data waktu",
@@ -557,6 +779,23 @@
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "models.Simpanan": {
+            "type": "object",
+            "properties": {
+                "is_main": {
+                    "type": "boolean"
+                },
+                "jenis_simpanan": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "warna": {
+                    "type": "string"
                 }
             }
         },

@@ -35,5 +35,11 @@ func SetupRouter() *gin.Engine {
 	router.POST("/api/times", middlewares.AuthMiddleware(), controllers.CreateTimes)
 	router.PUT("/api/times/:id", middlewares.AuthMiddleware(), controllers.UpdateTimes)
 	router.DELETE("/api/times/:id", middlewares.AuthMiddleware(), controllers.DeleteTimes)
+
+	router.GET("/api/simpanan", middlewares.AuthMiddleware(), controllers.GetListSimpanan)
+	router.GET("/api/simpanan/:id", middlewares.AuthMiddleware(), controllers.GetSimpananById)
+	router.POST("/api/simpanan", middlewares.AuthMiddleware(), controllers.CreateSimpanan)
+	router.PUT("/api/simpanan/:id", middlewares.AuthMiddleware(), controllers.UpdateSimpanan)
+	router.DELETE("/api/simpanan/:id", middlewares.AuthMiddleware(), controllers.DeleteSimpanan)
 	return router
 }

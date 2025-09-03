@@ -11,6 +11,17 @@ definitions:
       success:
         type: boolean
     type: object
+  models.Simpanan:
+    properties:
+      is_main:
+        type: boolean
+      jenis_simpanan:
+        type: string
+      nama:
+        type: string
+      warna:
+        type: string
+    type: object
   models.SuccessResponse:
     properties:
       data: {}
@@ -120,6 +131,156 @@ paths:
       summary: Register User
       tags:
       - User - Auth
+  /simpanan:
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan semua data simpanan
+      parameters:
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+      summary: Get All Simpanan
+      tags:
+      - Simpanan
+    post:
+      consumes:
+      - application/json
+      description: Membuat data simpanan baru
+      parameters:
+      - description: Data Simpanan
+        in: body
+        name: simpanan
+        required: true
+        schema:
+          $ref: '#/definitions/models.Simpanan'
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create Simpanan
+      tags:
+      - Simpanan
+  /simpanan/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Menghapus data simpanan berdasarkan ID
+      parameters:
+      - description: ID Simpanan
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Delete Simpanan By ID
+      tags:
+      - Simpanan
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan data simpanan berdasarkan ID
+      parameters:
+      - description: ID Simpanan
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get Simpanan By ID
+      tags:
+      - Simpanan
+    put:
+      consumes:
+      - application/json
+      description: Memperbarui data simpanan
+      parameters:
+      - description: ID Simpanan
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Data Simpanan
+        in: body
+        name: simpanan
+        required: true
+        schema:
+          $ref: '#/definitions/models.Simpanan'
+      - description: Authorization token
+        example: '"Bearer <token>"'
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Update Simpanan
+      tags:
+      - Simpanan
   /times:
     get:
       consumes:
