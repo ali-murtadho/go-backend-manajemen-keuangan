@@ -16,10 +16,10 @@ func InitDB() {
 
 	// Load konfigurasi database dari .env
 	dbUser := config.GetEnv("DB_USER", "postgres") // Default user PostgreSQL biasanya 'postgres'
-	dbPass := config.GetEnv("DB_PASS", "")
+	dbPass := config.GetEnv("DB_PASS", "password")
 	dbHost := config.GetEnv("DB_HOST", "localhost")
-	dbPort := config.GetEnv("DB_PORT", "5432")        // Port default PostgreSQL adalah 5432
-	dbName := config.GetEnv("DB_NAME", "db_keuangan") // Nama database, misalnya 'mydb'
+	dbPort := config.GetEnv("DB_PORT", "5432")             // Port default PostgreSQL adalah 5432
+	dbName := config.GetEnv("DB_NAME", "db_keuangan_test") // Nama database, misalnya 'mydb'
 
 	// Format DSN untuk PostgreSQL
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
